@@ -3,6 +3,7 @@ package Start;
 import Controller.Controller;
 import Model.AdminOperations;
 import View.AdminView;
+import View.CasierView;
 import View.LogareView;
 
 import javax.swing.*;
@@ -23,6 +24,7 @@ public class Main {
 
         LogareView logareView=new LogareView();
         AdminView adminView=new AdminView();
-        Controller controller=new Controller(logareView,adminView);
+        CasierView casierView=new CasierView();
+        Controller controller=new Controller(logareView,adminView,casierView);
     }
 }

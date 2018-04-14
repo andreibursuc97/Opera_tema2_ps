@@ -4,10 +4,15 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "bilet", schema = "opera", catalog = "")
+@NamedQueries({
+        @NamedQuery(name = "BiletEntity.showAll", query = " FROM BiletEntity as bil where bil.idSpectacol=:id")
+})
+
 public class BiletEntity {
     private int id;
     private Integer rand;
     private Integer numar;
+    private Integer idSpectacol;
 
     @Id
     @Column(name = "id")
@@ -59,5 +64,15 @@ public class BiletEntity {
         result = 31 * result + (rand != null ? rand.hashCode() : 0);
         result = 31 * result + (numar != null ? numar.hashCode() : 0);
         return result;
+    }
+
+    @Basic
+    @Column(name = "id_spectacol")
+    public Integer getIdSpectacol() {
+        return idSpectacol;
+    }
+
+    public void setIdSpectacol(Integer idSpectacol) {
+        this.idSpectacol = idSpectacol;
     }
 }

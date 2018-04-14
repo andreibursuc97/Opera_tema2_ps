@@ -110,7 +110,7 @@ public class CasierOperations {
 
     }
 
-    public void logareCasier(String username,String parola)
+    public boolean logareCasier(String username,String parola)
     {
 
         try {
@@ -127,13 +127,14 @@ public class CasierOperations {
                 throw new IllegalArgumentException("Ai introdus o parola gresita!!");
             }
 
-            JOptionPane.showMessageDialog(null,"Casier logat!");
+            return true;
 
         }catch (IllegalArgumentException e)
         {
             JOptionPane.showMessageDialog(null,e.getMessage());
         }
 
+        return false;
         //JOptionPane.showMessageDialog(null,"Datele casierului au fost modificate cu succes!");
 
 

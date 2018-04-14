@@ -1,9 +1,8 @@
 package Controller;
 
-import Model.AdminOperations;
-import Model.CasierOperations;
-import Model.SpectacolOperations;
+import Model.*;
 import View.AdminView;
+import View.CasierView;
 import View.LogareView;
 
 import javax.swing.*;
@@ -14,13 +13,16 @@ public class Controller {
 
     LogareView logareView;
     AdminView adminView;
+    CasierView casierView;
     SpectacolOperations spectacolOperations;
     CasierOperations casierOperations;
+    BiletOperations biletOperations;
 
-    public Controller(LogareView logareView, AdminView adminView)
+    public Controller(LogareView logareView, AdminView adminView,CasierView casierView)
     {
         this.logareView=logareView;
         this.adminView=adminView;
+        this.casierView=casierView;
         logareView.setVisible(true);
         logareView.setLogareAdminButton(new ButonLogareAdmin());
         logareView.setLogareCasierButton(new ButonLogareCasier());
@@ -29,8 +31,11 @@ public class Controller {
         adminView.setListenerModificaSpectacolButon(new ModificaSpectacol());
         adminView.setListenerAdaugaCasierButon(new AdaugaCasier());
         adminView.setListenerModificaDateCasierButon(new ModificaCasier());
+        casierView.setDelogareButton(new ButonDelogareCasier());
+        casierView.setAdaugaBiletButton(new AdaugaBilet());
         spectacolOperations=new SpectacolOperations();
         casierOperations=new CasierOperations();
+        biletOperations=new BiletOperations();
     }
 
     public class ButonLogareAdmin implements ActionListener{
@@ -51,13 +56,22 @@ public class Controller {
             String username=logareView.getUserNameField().getText();
             String parola=logareView.getParolaField().getText();
             //AdminOperations adminOperations=new AdminOperations();
-            casierOperations.logareCasier(username,parola);
+            if(casierOperations.logareCasier(username,parola))
+                casierView.setVisible(true);
+
         }
     }
 
     public class ButonDelogareAdmin implements ActionListener{
         public void actionPerformed(ActionEvent e){
             adminView.setVisible(false);
+            logareView.setVisible(true);
+        }
+    }
+
+    public class ButonDelogareCasier implements ActionListener{
+        public void actionPerformed(ActionEvent e){
+            casierView.setVisible(false);
             logareView.setVisible(true);
         }
     }
@@ -78,7 +92,7 @@ public class Controller {
 
                 spectacolOperations.adaugaSpectaool(gen, titlu, regia, distributia, Data, numarTotalBilete, 0);
                 adminView.modelUpdate();
-                adminView.getTabelSpectacole().setModel(adminView.getModelSpectacol());
+                casierView.modelUpdate();
             }catch (NumberFormatException e2)
             {
                 JOptionPane.showMessageDialog(null,"Format gresit introdus pentru numarul de bilete!");
@@ -89,6 +103,8 @@ public class Controller {
             }
         }
     }
+
+
 
     public class ModificaSpectacol implements ActionListener{
         @Override
@@ -105,9 +121,9 @@ public class Controller {
                 if(numarTotalBilete<=0)
                     throw new IllegalArgumentException();
 
-                spectacolOperations.modificaSpectaool(id,gen, titlu, regia, distributia, Data, numarTotalBilete, 0);
+                spectacolOperations.modificaSpectaool(id,gen, titlu, regia, distributia, Data, numarTotalBilete);
                 adminView.modelUpdate();
-                adminView.getTabelSpectacole().setModel(adminView.getModelSpectacol());
+                casierView.modelUpdate();
             }catch (NumberFormatException e2)
             {
                 JOptionPane.showMessageDialog(null,"Format gresit introdus pentru numarul de bilete!");
@@ -135,6 +151,25 @@ public class Controller {
         }
     }
 
+    public class AdaugaBilet implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e) {
+
+            Integer idSpectacol=Integer.parseInt(casierView.getIdSpectacolField().getText());
+            Integer rand=Integer.parseInt(casierView.getRandField().getText());
+            Integer numar=Integer.parseInt(casierView.getNumarField().getText());
+
+            biletOperations.adaugaBilet(idSpectacol,rand,numar);
+
+            casierView.modelUpdateBilete(idSpectacol);
+            casierView.modelUpdate();
+            adminView.modelUpdate();
+            //casierView.getTabelBilete().setModel(casierOperations.);
+
+
+        }
+    }
+
     public class ModificaCasier implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -146,7 +181,6 @@ public class Controller {
 
             casierOperations.modificaCasier(id,nume,username,parola);
             adminView.modelUpdateCasier();
-            adminView.getTabelSpectacole().setModel(adminView.getModelSpectacol());
 
 
         }

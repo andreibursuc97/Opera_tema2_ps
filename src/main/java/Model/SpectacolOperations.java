@@ -68,7 +68,7 @@ public class SpectacolOperations {
 
     }
 
-    public void modificaSpectaool(Integer id,String gen, String titlu, String regia, String distributie,String data, Integer nrTotalBilete, Integer nrBileteVandute)
+    public void modificaSpectaool(Integer id,String gen, String titlu, String regia, String distributie,String data, Integer nrTotalBilete)
     {
         try {
             entityManagerFactory=Persistence.createEntityManagerFactory("org.hibernate.tutorial.jpa");
@@ -80,7 +80,7 @@ public class SpectacolOperations {
             spectacol.setRegia(regia);
             spectacol.setDistributie(distributie);
             spectacol.setNrTotalBilete(nrTotalBilete);
-            spectacol.setNrBileteVandute(nrBileteVandute);
+            spectacol.setNrBileteVandute(spectacol.getNrBileteVandute());
 
 
             Date date=outputFormat.parse(data);
