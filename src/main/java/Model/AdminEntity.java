@@ -4,7 +4,8 @@ import javax.persistence.*;
 import java.util.Arrays;
 
 @Entity
-@Table(name = "admin", schema = "opera", catalog = "")
+@Table(name = "admin", schema = "opera")
+@NamedQuery(name="Admin.findById", query = "FROM AdminEntity A where A.username = :username")
 public class AdminEntity {
     private int id;
     private String username;

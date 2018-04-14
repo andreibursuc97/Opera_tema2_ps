@@ -11,14 +11,14 @@ public class AdminOperations {
     EntityManager entityManager;
     EntityManagerFactory entityManagerFactory;
 
-    private static final String CautareUsernameAdminString;
+    /*private static final String CautareUsernameAdminString;
     private static final String cautareParolaAdminString;
 
     static
     {
         CautareUsernameAdminString="FROM AdminEntity A where A.username = :username";
         cautareParolaAdminString="update admin set logat=false where logat=true";
-    }
+    }*/
 
     public AdminOperations()
     {
@@ -52,10 +52,11 @@ public class AdminOperations {
 
             entityManagerFactory = Persistence.createEntityManagerFactory("org.hibernate.tutorial.jpa");
             entityManager = entityManagerFactory.createEntityManager();
-            Query query = entityManager.createQuery(CautareUsernameAdminString);
+            Query query = entityManager.createNamedQuery("Admin.findById");
 
             query.setParameter("username", username);
             AdminEntity admin=(AdminEntity) query.getSingleResult();
+            //admin=entityManager.find(AdminEntity);
             if (admin == null)
                 throw new IllegalArgumentException("Ai introdus un username gresit!");
 

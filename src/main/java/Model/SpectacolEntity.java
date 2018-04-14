@@ -1,9 +1,11 @@
 package Model;
 
 import javax.persistence.*;
+import java.sql.Date;
 
 @Entity
-@Table(name = "spectacol", schema = "opera", catalog = "")
+@Table(name = "spectacol", schema = "opera")
+@NamedQuery(name="SpectacolEntity.afiseazaSpectacole",query = "FROM SpectacolEntity")
 public class SpectacolEntity {
     private int id;
     private String gen;
@@ -12,6 +14,7 @@ public class SpectacolEntity {
     private String distributie;
     private Integer nrTotalBilete;
     private Integer nrBileteVandute;
+    private Date data;
 
     @Id
     @Column(name = "id")
@@ -113,5 +116,15 @@ public class SpectacolEntity {
         result = 31 * result + (nrTotalBilete != null ? nrTotalBilete.hashCode() : 0);
         result = 31 * result + (nrBileteVandute != null ? nrBileteVandute.hashCode() : 0);
         return result;
+    }
+
+    @Basic
+    @Column(name = "Data")
+    public Date getData() {
+        return data;
+    }
+
+    public void setData(Date data) {
+        this.data = data;
     }
 }
