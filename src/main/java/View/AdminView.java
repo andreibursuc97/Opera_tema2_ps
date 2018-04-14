@@ -1,5 +1,6 @@
 package View;
 
+import Model.CasierOperations;
 import Model.SpectacolOperations;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
@@ -34,19 +35,29 @@ public class AdminView extends JFrame {
     private JTextField bileteField;
     private JTextField distributiaField;
     private MyModel modelSpectacol;
+    private MyModel modelCasier;
     private String[] selectedData;
     private ListSelectionModel listSelectionModelSpectacol;
+    private ListSelectionModel listSelectionModelCasier;
 
 
     public AdminView() {
 
         this.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-        modelSpectacol = new MyModel();
+        /*modelSpectacol = new MyModel();
         tabelSpectacole = new JTable();
         listSelectionModelSpectacol = tabelSpectacole.getSelectionModel();
         tabelSpectacole.setSelectionModel(listSelectionModelSpectacol);
         listSelectionModelSpectacol.addListSelectionListener(new SharedListSelectionHandlerSpectacol());
         tabelSpectacole.setSelectionModel(listSelectionModelSpectacol);
+
+        modelCasier = new MyModel();
+        tabelCasieri = new JTable();
+        listSelectionModelCasier = tabelCasieri.getSelectionModel();
+        tabelCasieri.setSelectionModel(listSelectionModelCasier);
+        listSelectionModelCasier.addListSelectionListener(new SharedListSelectionHandlerSpectacol());
+        tabelCasieri.setSelectionModel(listSelectionModelCasier);*/
+
         $$$setupUI$$$();
 
         this.setSize(1200, 1000);
@@ -68,6 +79,18 @@ public class AdminView extends JFrame {
         tabelSpectacole.add(tabelSpectacole.getTableHeader(), BorderLayout.PAGE_START);
 
         scrollPane1 = new JScrollPane(tabelSpectacole);
+
+        modelCasier = new MyModel();
+        tabelCasieri = new JTable();
+        listSelectionModelCasier = tabelCasieri.getSelectionModel();
+        tabelCasieri.setSelectionModel(listSelectionModelCasier);
+        listSelectionModelCasier.addListSelectionListener(new SharedListSelectionHandlerCasier());
+        tabelCasieri.setSelectionModel(listSelectionModelCasier);
+        modelUpdateCasier();
+        tabelCasieri.setModel(modelCasier);
+        tabelCasieri.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        tabelCasieri.add(tabelCasieri.getTableHeader(), BorderLayout.PAGE_START);
+        scrollPane2 = new JScrollPane(tabelCasieri);
     }
 
     public void modelUpdate() {
@@ -81,6 +104,18 @@ public class AdminView extends JFrame {
         modelSpectacol.setColumnNames(columnNames);
         modelSpectacol.setList(date);
 
+    }
+
+    public void modelUpdateCasier() {
+        String[] columnNames = {"Id", "Nume", "Username"};
+
+
+        CasierOperations casierOperations = new CasierOperations();
+        ArrayList<String[]> date = new ArrayList<String[]>();
+        date = casierOperations.afiseazaListaCasieri();
+
+        modelCasier.setColumnNames(columnNames);
+        modelCasier.setList(date);
     }
 
     /**
@@ -146,9 +181,7 @@ public class AdminView extends JFrame {
         panel3.add(label7, new GridConstraints(12, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         bileteField = new JTextField();
         panel3.add(bileteField, new GridConstraints(13, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
-        scrollPane2 = new JScrollPane();
         panel1.add(scrollPane2, new GridConstraints(2, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
-        tabelCasieri = new JTable();
         scrollPane2.setViewportView(tabelCasieri);
         final JPanel panel4 = new JPanel();
         panel4.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
@@ -207,6 +240,20 @@ public class AdminView extends JFrame {
                 distributiaField.setText(tabelSpectacole.getValueAt(tabelSpectacole.getSelectedRow(), 4).toString());
                 dataField.setText(tabelSpectacole.getValueAt(tabelSpectacole.getSelectedRow(), 5).toString());
                 bileteField.setText(tabelSpectacole.getValueAt(tabelSpectacole.getSelectedRow(), 6).toString());
+            }
+        }
+    }
+
+    class SharedListSelectionHandlerCasier implements ListSelectionListener {
+
+        @Override
+        public void valueChanged(ListSelectionEvent e) {
+            ListSelectionModel lsm = (ListSelectionModel) e.getSource();
+            if (tabelCasieri.getSelectedRow() != -1) {
+                idCasierField.setText(tabelCasieri.getValueAt(tabelCasieri.getSelectedRow(), 0).toString());
+                numeField.setText(tabelCasieri.getValueAt(tabelCasieri.getSelectedRow(), 1).toString());
+                usernameField.setText(tabelCasieri.getValueAt(tabelCasieri.getSelectedRow(), 2).toString());
+                parolaField.setText("");
             }
         }
     }

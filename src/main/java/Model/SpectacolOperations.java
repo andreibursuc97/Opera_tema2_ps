@@ -120,6 +120,7 @@ public class SpectacolOperations {
                     spectacol.getDistributie(),outputFormat.format(spectacol.getData()),Integer.toString(spectacol.getNrTotalBilete()),Integer.toString(spectacol.getNrBileteVandute())};
             elemente.add(dateTabel);
         }
+        entityManagerFactory.close();
 
         return elemente;
     }

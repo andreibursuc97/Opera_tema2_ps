@@ -4,7 +4,12 @@ import javax.persistence.*;
 import java.util.Arrays;
 
 @Entity
-@Table(name = "casier", schema = "opera", catalog = "")
+@Table(name = "casier", schema = "opera")
+//@NamedQuery(name="CasierEntity.showAll", query = "select CasierEntity.id,CasierEntity.nume,CasierEntity.username FROM CasierEntity")
+@NamedQueries({
+        @NamedQuery(name = "CasierEntity.showAll", query = " FROM CasierEntity as cas"),
+        @NamedQuery(name = "CasierEntity.findByUsername", query = "FROM CasierEntity C where C.username = :username")
+})
 public class CasierEntity {
     private int id;
     private String username;

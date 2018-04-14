@@ -1,6 +1,7 @@
 package Controller;
 
 import Model.AdminOperations;
+import Model.CasierOperations;
 import Model.SpectacolOperations;
 import View.AdminView;
 import View.LogareView;
@@ -14,6 +15,7 @@ public class Controller {
     LogareView logareView;
     AdminView adminView;
     SpectacolOperations spectacolOperations;
+    CasierOperations casierOperations;
 
     public Controller(LogareView logareView, AdminView adminView)
     {
@@ -21,10 +23,14 @@ public class Controller {
         this.adminView=adminView;
         logareView.setVisible(true);
         logareView.setLogareAdminButton(new ButonLogareAdmin());
+        logareView.setLogareCasierButton(new ButonLogareCasier());
         adminView.setListenerLogOutButon(new ButonDelogareAdmin());
         adminView.setListenerAdaugaSpectacolButon(new AdaugaSpectacol());
         adminView.setListenerModificaSpectacolButon(new ModificaSpectacol());
+        adminView.setListenerAdaugaCasierButon(new AdaugaCasier());
+        adminView.setListenerModificaDateCasierButon(new ModificaCasier());
         spectacolOperations=new SpectacolOperations();
+        casierOperations=new CasierOperations();
     }
 
     public class ButonLogareAdmin implements ActionListener{
@@ -37,6 +43,15 @@ public class Controller {
                 adminView.setVisible(true);
                 logareView.setVisible(false);
             }
+        }
+    }
+
+    public class ButonLogareCasier implements ActionListener{
+        public void actionPerformed(ActionEvent e){
+            String username=logareView.getUserNameField().getText();
+            String parola=logareView.getParolaField().getText();
+            //AdminOperations adminOperations=new AdminOperations();
+            casierOperations.logareCasier(username,parola);
         }
     }
 
@@ -104,7 +119,38 @@ public class Controller {
         }
     }
 
+    public class AdaugaCasier implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e) {
 
+                String nume=adminView.getNumeField().getText();
+                String username=adminView.getUsernameField().getText();
+                String parola=adminView.getParolaField().getText();
+
+                casierOperations.adaugaCasier(nume,username,parola);
+                adminView.modelUpdateCasier();
+                adminView.getTabelSpectacole().setModel(adminView.getModelSpectacol());
+
+
+        }
+    }
+
+    public class ModificaCasier implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e) {
+
+            Integer id=Integer.parseInt(adminView.getIdCasierField().getText());
+            String nume=adminView.getNumeField().getText();
+            String username=adminView.getUsernameField().getText();
+            String parola=adminView.getParolaField().getText();
+
+            casierOperations.modificaCasier(id,nume,username,parola);
+            adminView.modelUpdateCasier();
+            adminView.getTabelSpectacole().setModel(adminView.getModelSpectacol());
+
+
+        }
+    }
 
 
 }
