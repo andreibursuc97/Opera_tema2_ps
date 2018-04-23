@@ -5,6 +5,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
 import javax.swing.*;
+import java.util.List;
 
 public class AdminOperations {
 
@@ -55,6 +56,9 @@ public class AdminOperations {
             Query query = entityManager.createNamedQuery("Admin.findById");
 
             query.setParameter("username", username);
+            List<AdminEntity> adminEntityList=query.getResultList();
+            if(adminEntityList.isEmpty())
+                throw new IllegalArgumentException("Ai introdus un username gresit!");
             AdminEntity admin=(AdminEntity) query.getSingleResult();
             //admin=entityManager.find(AdminEntity);
             if (admin == null)

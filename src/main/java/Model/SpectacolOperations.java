@@ -79,6 +79,12 @@ public class SpectacolOperations {
             spectacol.setTitlu(titlu);
             spectacol.setRegia(regia);
             spectacol.setDistributie(distributie);
+
+            if(nrTotalBilete<spectacol.getNrTotalBilete())
+            {
+                throw  new IllegalArgumentException("Nu se pot seta mai putine bilete decat cele deja vandute!");
+            }
+
             spectacol.setNrTotalBilete(nrTotalBilete);
             spectacol.setNrBileteVandute(spectacol.getNrBileteVandute());
 
@@ -97,6 +103,9 @@ public class SpectacolOperations {
         } catch (ParseException e) {
             JOptionPane.showMessageDialog(null,"Formatul introdus pentru data este gresit!");
         }
+          catch (IllegalArgumentException e){
+            JOptionPane.showMessageDialog(null,e.getMessage());
+          }
         finally {
             entityManagerFactory.close();
         }

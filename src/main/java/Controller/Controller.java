@@ -33,6 +33,8 @@ public class Controller {
         adminView.setListenerModificaDateCasierButon(new ModificaCasier());
         casierView.setDelogareButton(new ButonDelogareCasier());
         casierView.setAdaugaBiletButton(new AdaugaBilet());
+        casierView.setExportaJsonButton(new ExportaJson());
+        casierView.setExportaCsvButton(new ExportaCsv());
         spectacolOperations=new SpectacolOperations();
         casierOperations=new CasierOperations();
         biletOperations=new BiletOperations();
@@ -57,7 +59,8 @@ public class Controller {
             String parola=logareView.getParolaField().getText();
             //AdminOperations adminOperations=new AdminOperations();
             if(casierOperations.logareCasier(username,parola))
-                casierView.setVisible(true);
+            {   logareView.setVisible(false);
+                casierView.setVisible(true);}
 
         }
     }
@@ -154,16 +157,23 @@ public class Controller {
     public class AdaugaBilet implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent e) {
+            try {
+                Integer idSpectacol=Integer.parseInt(casierView.getIdSpectacolField().getText());
+                Integer rand=Integer.parseInt(casierView.getRandField().getText());
+                Integer numar=Integer.parseInt(casierView.getNumarField().getText());
+                if(rand<=0 || numar<=0)
+                    throw new NumberFormatException();
+                biletOperations.adaugaBilet(idSpectacol,rand,numar);
 
-            Integer idSpectacol=Integer.parseInt(casierView.getIdSpectacolField().getText());
-            Integer rand=Integer.parseInt(casierView.getRandField().getText());
-            Integer numar=Integer.parseInt(casierView.getNumarField().getText());
+                casierView.modelUpdateBilete(idSpectacol);
+                casierView.modelUpdate();
+                adminView.modelUpdate();
+            }
+            catch (NumberFormatException exception)
+            {
+                JOptionPane.showMessageDialog(null,"Nu ai selectat un spectacol sau ai introdus un format gresit pentru numar sau rand!");
+            }
 
-            biletOperations.adaugaBilet(idSpectacol,rand,numar);
-
-            casierView.modelUpdateBilete(idSpectacol);
-            casierView.modelUpdate();
-            adminView.modelUpdate();
             //casierView.getTabelBilete().setModel(casierOperations.);
 
 
@@ -186,5 +196,36 @@ public class Controller {
         }
     }
 
+    public class ExportaJson implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e) {
+
+            Integer idSpectacol=Integer.parseInt(casierView.getIdSpectacolField().getText());
+
+
+            biletOperations.export(ExporterFactory.getExporter("Json"),idSpectacol);
+            JOptionPane.showMessageDialog(null,"Exportarea in formatul Json a reusit!");
+
+            //casierView.getTabelBilete().setModel(casierOperations.);
+
+
+        }
+    }
+
+    public class ExportaCsv implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e) {
+
+            Integer idSpectacol=Integer.parseInt(casierView.getIdSpectacolField().getText());
+
+
+            biletOperations.export(ExporterFactory.getExporter("Csv"),idSpectacol);
+            JOptionPane.showMessageDialog(null,"Exportarea in formatul Csv a reusit!");
+
+            //casierView.getTabelBilete().setModel(casierOperations.);
+
+
+        }
+    }
 
 }

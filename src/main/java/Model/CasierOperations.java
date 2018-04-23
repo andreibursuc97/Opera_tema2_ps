@@ -101,7 +101,13 @@ public class CasierOperations {
             Query query = entityManager.createNamedQuery("CasierEntity.findByUsername");
 
             query.setParameter("username", username);
-            CasierEntity casier=(CasierEntity) query.getSingleResult();
+            List<CasierEntity> casierEntityList=query.getResultList();
+            CasierEntity casier=null;
+            if(casierEntityList.isEmpty())
+            {   //entityManagerFactory.close();
+                throw new IllegalArgumentException("Nu exista acest username!");
+            }
+            casier=(CasierEntity) query.getSingleResult();
             //admin=entityManager.find(AdminEntity);
 
             entityManagerFactory.close();

@@ -37,6 +37,29 @@ public class BiletOperations {
         return elemente;
     }
 
+    public List<BiletEntity> returneazaBilete(int idSpectaool)
+    {
+        entityManagerFactory = Persistence.createEntityManagerFactory("org.hibernate.tutorial.jpa");
+        entityManager = entityManagerFactory.createEntityManager();
+        Query query = entityManager.createNamedQuery("BiletEntity.showAll");
+
+        query.setParameter("id", idSpectaool);
+        //Query query = entityManager.createQuery(afisareSpectacoleString);
+        ArrayList<String[]> elemente=new ArrayList<String[]>();
+        //query.setParameter("username", username);
+        List<BiletEntity> biletEntities= query.getResultList();
+
+
+        entityManagerFactory.close();
+
+        return biletEntities;
+    }
+
+    public void export(Exporter exporter,int id)
+    {
+        exporter.export(id);
+    }
+
     public void adaugaBilet(int idSpectacol,int rand,int numar)
     {
         try {
@@ -47,6 +70,7 @@ public class BiletOperations {
 
             query.setParameter("rand", rand);
             query.setParameter("numar",numar);
+            query.setParameter("idSpectacol",idSpectacol);
             if(!query.getResultList().isEmpty())
             {
                 throw new IllegalArgumentException("Exista deja un bilet pe acest rand si numar!");

@@ -6,7 +6,7 @@ import javax.persistence.*;
 @Table(name = "bilet", schema = "opera")
 @NamedQueries({
         @NamedQuery(name = "BiletEntity.showAll", query = " FROM BiletEntity as bil where bil.idSpectacol=:id"),
-        @NamedQuery(name = "BiletEntity.check", query = " FROM BiletEntity as bil where bil.rand=:rand and bil.numar=:numar")
+        @NamedQuery(name = "BiletEntity.check", query = " FROM BiletEntity as bil where bil.rand=:rand and bil.numar=:numar and bil.idSpectacol= :idSpectacol")
 })
 
 public class BiletEntity {
@@ -66,6 +66,7 @@ public class BiletEntity {
         result = 31 * result + (numar != null ? numar.hashCode() : 0);
         return result;
     }
+
 
     @Basic
     @Column(name = "id_spectacol")
