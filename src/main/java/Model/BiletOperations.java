@@ -42,7 +42,18 @@ public class BiletOperations {
         try {
             entityManagerFactory=Persistence.createEntityManagerFactory("org.hibernate.tutorial.jpa");
             entityManager=entityManagerFactory.createEntityManager();
+
+            Query query = entityManager.createNamedQuery("BiletEntity.check");
+
+            query.setParameter("rand", rand);
+            query.setParameter("numar",numar);
+            if(!query.getResultList().isEmpty())
+            {
+                throw new IllegalArgumentException("Exista deja un bilet pe acest rand si numar!");
+            }
+
             SpectacolEntity spectacol=entityManager.find(SpectacolEntity.class,idSpectacol);
+
             if(spectacol.getNrBileteVandute()==spectacol.getNrTotalBilete())
                 throw new IllegalArgumentException("A fost atins numarul total de bilete!");
             BiletEntity bilet=new BiletEntity();

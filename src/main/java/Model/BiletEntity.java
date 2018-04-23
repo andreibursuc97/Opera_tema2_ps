@@ -3,9 +3,10 @@ package Model;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "bilet", schema = "opera", catalog = "")
+@Table(name = "bilet", schema = "opera")
 @NamedQueries({
-        @NamedQuery(name = "BiletEntity.showAll", query = " FROM BiletEntity as bil where bil.idSpectacol=:id")
+        @NamedQuery(name = "BiletEntity.showAll", query = " FROM BiletEntity as bil where bil.idSpectacol=:id"),
+        @NamedQuery(name = "BiletEntity.check", query = " FROM BiletEntity as bil where bil.rand=:rand and bil.numar=:numar")
 })
 
 public class BiletEntity {
