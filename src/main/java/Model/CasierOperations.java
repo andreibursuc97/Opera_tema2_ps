@@ -105,7 +105,7 @@ public class CasierOperations {
             CasierEntity casier=null;
             if(casierEntityList.isEmpty())
             {   //entityManagerFactory.close();
-                throw new IllegalArgumentException("Nu exista acest username!");
+                return null;
             }
             casier=(CasierEntity) query.getSingleResult();
             //admin=entityManager.find(AdminEntity);
